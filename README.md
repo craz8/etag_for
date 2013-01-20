@@ -60,7 +60,7 @@ The single item or items array that is the basic data retrieved to be rendered. 
 provides a single post object
 
 ```ruby
-class FooController < ApplicationController
+class PostController < ApplicationController
 
   def index
     @posts = Post.all
