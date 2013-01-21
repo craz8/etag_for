@@ -55,45 +55,21 @@ describe EtagFor do
     TestController.new.send(:js_path, "").must_be_nil
   end
 
-  it "must extract keys from item array with cache_key" do
-    item_1 = MiniTest::Mock.new
-    item_1.expect :cache_key, "foo"
+  it "must return array from etag_for with single item" do
+    item = MiniTest::Mock.new
+    item.expect :to_param, "foo"
 
-    item_2 = MiniTest::Mock.new
-    item_2.expect :cache_key, "bar"
-
-    TestController.new.send(:extract_keys, [ item_1, item_2 ]).must_equal [ "foo", "bar" ]
+    TestController.new.etag_for(item, :css => "", :js => "").must_equal [ item, nil, nil ]
   end
 
-  it "must extract key from a single item with cache_key" do
-    item_1 = MiniTest::Mock.new
-    item_1.expect :cache_key, "foo"
-
-    TestController.new.send(:extract_keys, item_1).must_equal "foo"
-  end
-
-  it "must extract keys from item array with out cache_key" do
+  it "must return array from etag_for with many items" do
     item_1 = MiniTest::Mock.new
     item_1.expect :to_param, "foo"
 
     item_2 = MiniTest::Mock.new
     item_2.expect :to_param, "bar"
 
-    TestController.new.send(:extract_keys, [ item_1, item_2 ]).must_equal [ "foo", "bar" ]
-  end
-
-  it "must extract key from a single item with out cache_key" do
-    item_1 = MiniTest::Mock.new
-    item_1.expect :to_param, "foo"
-
-    TestController.new.send(:extract_keys, item_1).must_equal "foo"
-  end
-
-  it "must return array from etag_for" do
-    item = MiniTest::Mock.new
-    item.expect :to_param, "foo"
-
-    TestController.new.etag_for(item, :css => "", :js => "").must_equal [ "foo", nil, nil ]
+    TestController.new.etag_for( [ item_1, item_2 ], :css => "", :js => "").must_equal [ item_1, item_2, nil, nil ]
   end
 end
 

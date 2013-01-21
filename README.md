@@ -52,7 +52,9 @@ end
 
 ## etag_for(item_or_items, options = {})
 
-Returns an array of strings that can be used as an input to **fresh_when** and **stale?** to calculate an ETag value for the current request.
+Returns an array of objects and strings that can be used as the **etag** parameter to **fresh_when** and **stale?** to calculate 
+an ETag value for the current request.  The extra files involved give a more representative value for the **ETAG** header when rendering the
+response using Rails view templates 
 
 ### item_or_items parameter
 
