@@ -99,6 +99,15 @@ The name of the layout file used by this action.  An MD5 digest of this file wil
 
 e.g. 'application.html.erb'
 
+
+#### :partials
+
+
+The name of the partials used by this action. An MD5 digest of these files will be part of the ETag calculation
+
+e.g. '_menu.html.erb'
+
+
 #### :view
 
 The path and name of the view file used by this action.  An MD5 digest of this file will be part of the ETag calculation

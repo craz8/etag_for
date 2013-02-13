@@ -3,21 +3,33 @@ module EtagFor
 
   def etag_for(item_or_items, options = {})
     css_file = options[:css] || 'application'
-    js_file = options[:js] || 'application'
+    js_file  = options[:js] || 'application'
 
     files = []
-    files << "layouts/#{options[:layout]}" if options[:layout]
-    files << options[:view] if options[:view]
-    files += options[:files] if options[:files]
+    files << layout_path(options[:layout])     if options[:layout]
+    files += partial_paths(options[:partials]) if options[:partials]
+    files << options[:view]                    if options[:view]
+    files += options[:files]                   if options[:files]
 
     [ item_or_items ].flatten + [ css_path(css_file), js_path(js_file) ] + digests_of(files)
   end
 
 protected
   def digests_of(file_list)
-    file_list.map do |file| 
-      Digest::MD5.hexdigest(File.read("#{Rails.root}/app/views/#{file}"))
+    file_list.map do |file|
+      path = File.join(Rails.root, "app", "views", file)
+      Digest::MD5.hexdigest(File.read(path))
     end
+  end
+
+  def partial_paths(partial_files)
+    partial_files.map do |file|
+      File.join("application", "_#{file}")
+    end
+  end
+
+  def layout_path(layout_file)
+    File.join("layout", layout_file)
   end
 
   def css_path(css_file)
